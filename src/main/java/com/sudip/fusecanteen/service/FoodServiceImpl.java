@@ -42,8 +42,7 @@ public class FoodServiceImpl implements FoodService {
 
     @Override
     public List<Food> getAll(Pageable pageable) {
-        List<Food> foods = foodRepository.findAll(pageable).getContent();
-        return foods;
+        return foodRepository.findAll(pageable).getContent();
     }
 
     @Override
@@ -51,5 +50,10 @@ public class FoodServiceImpl implements FoodService {
         User user = userService.getByUsername(foodDTO.getUsername());
         Food food = foodMapper.convertToFood(foodDTO, user);
         return foodRepository.save(food);
+    }
+
+    @Override
+    public List<Food> getByNames(List<String> names) {
+        return foodRepository.findByNameIn(names);
     }
 }

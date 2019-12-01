@@ -13,4 +13,6 @@ public interface FoodService {
     List<Food> getAll(Pageable pageable);
 
     Food update(FoodDTO food);
+
+    List<Food> getByNames(List<String> names);
 }
