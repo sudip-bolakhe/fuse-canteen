@@ -1,6 +1,7 @@
 package com.sudip.fusecanteen.resources;
 
 import com.sudip.fusecanteen.dto.OrderDTO;
+import com.sudip.fusecanteen.model.Order;
 import com.sudip.fusecanteen.service.OrderService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,8 +19,8 @@ public class OrderController {
     }
 
     @PostMapping
-    public String  add(@RequestBody OrderDTO orderDTO){
-        orderService.add(orderDTO);
-        return orderDTO.toString();
+    public Order add(@RequestBody OrderDTO orderDTO){
+
+        return orderService.add(orderDTO);
     }
 }
