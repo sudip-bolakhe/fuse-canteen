@@ -5,6 +5,7 @@ import com.sudip.fusecanteen.model.Order;
 import com.sudip.fusecanteen.model.OrderItem;
 import com.sudip.fusecanteen.model.User;
 import com.sudip.fusecanteen.repository.OrderRepository;
+import com.sudip.fusecanteen.utils.OrderStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,6 +36,7 @@ public class OrderServiceImpl implements OrderService {
         User user = userService.getByUsername(orderDTO.getUsername());
         Order order = getOrderAmount(orderDTO.getFoodQuantity());
         order.setUser(user);
+        order.setStatus(OrderStatus.INPROGRESS.toString());
         order.setDate(LocalDate.now());
         return orderRepository.save(order);
     }
@@ -54,5 +56,13 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository.findByUserAndDateBetween(user
                 , LocalDate.parse(startDate)
                 , LocalDate.parse(endDate));
+    }
+
+    @Override
+    public Order updateStatus(String id, OrderStatus orderStatus) {
+        Order order = orderRepository.findById(id).orElseThrow(() -> new RuntimeException("Order not found"));
+        order.setStatus(orderStatus.toString());
+        orderRepository.save(order);
+        return order;
     }
 }

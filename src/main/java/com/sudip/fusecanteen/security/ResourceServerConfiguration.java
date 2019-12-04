@@ -31,7 +31,7 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
                         "/webjars/**"
                 ).permitAll()
                 .antMatchers("/oauth/token").permitAll()
-                .anyRequest().permitAll()
+                .anyRequest().authenticated()
                 .and().httpBasic();
     }
 

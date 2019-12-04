@@ -9,7 +9,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 
 @Setter
 @Getter
@@ -25,5 +24,5 @@ public class Order {
     private  User user;
     private double amount;
     private LocalDate date;
-
+    private String status;
 }

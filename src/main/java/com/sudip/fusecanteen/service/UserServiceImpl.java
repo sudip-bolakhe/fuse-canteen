@@ -19,7 +19,6 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.net.URI;
 import java.util.Base64;
 import java.util.List;
 
@@ -55,7 +54,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User add(UserDTO userDTO) {
         List<Role> roles = roleService.getByNames(userDTO.getRoles());
-        User user = userMapper.convertToUser(userDTO,roles);
+        User user = userMapper.convertToUser(userDTO, roles);
         user.setPassword(getEncodedPassword(user.getPassword()));
         return userRepository.save(user);
     }
@@ -83,15 +82,12 @@ public class UserServiceImpl implements UserService {
     public ResponseEntity<?> login(UserDTO userDTO) {
         RestTemplate restTemplate = new RestTemplate();
         try {
-
-
-        UriComponents  uriComponents = UriComponentsBuilder.fromUriString(authUrl).path("/oauth/token")
-                .queryParam("username", userDTO.getUsername())
-                .queryParam("password", userDTO.getPassword())
-                .queryParam("grant_type", "password").build();
-      ResponseEntity responseEntity=   restTemplate.exchange(uriComponents.toUri(), HttpMethod.POST, new HttpEntity<>(null, getHeaders()),String.class );
-    return responseEntity;
-        } catch (HttpClientErrorException e){
+            UriComponents uriComponents = UriComponentsBuilder.fromUriString(authUrl).path("/oauth/token")
+                    .queryParam("username", userDTO.getUsername())
+                    .queryParam("password", userDTO.getPassword())
+                    .queryParam("grant_type", "password").build();
+            return restTemplate.exchange(uriComponents.toUri(), HttpMethod.POST, new HttpEntity<>(null, getHeaders()), String.class);
+        } catch (HttpClientErrorException e) {
             System.out.println(e);
             return null;
         }
@@ -99,12 +95,12 @@ public class UserServiceImpl implements UserService {
     }
 
     private HttpHeaders getHeaders() {
-       HttpHeaders httpHeaders = new HttpHeaders();
-       httpHeaders.set("Authorization", "Basic " + getBasics());
-       return httpHeaders;
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.set("Authorization", "Basic " + getBasics());
+        return httpHeaders;
     }
 
     private String getBasics() {
-       return Base64.getEncoder().encodeToString((clientId + ":"+ clientSecret).getBytes());
+        return Base64.getEncoder().encodeToString((clientId + ":" + clientSecret).getBytes());
     }
 }
