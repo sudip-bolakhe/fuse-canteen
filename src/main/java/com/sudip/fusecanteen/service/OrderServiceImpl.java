@@ -1,14 +1,15 @@
 package com.sudip.fusecanteen.service;
 
 import com.sudip.fusecanteen.dto.OrderDTO;
-import com.sudip.fusecanteen.model.Food;
 import com.sudip.fusecanteen.model.Order;
+import com.sudip.fusecanteen.model.OrderItem;
 import com.sudip.fusecanteen.model.User;
 import com.sudip.fusecanteen.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -17,27 +18,41 @@ import java.util.Map;
 public class OrderServiceImpl implements OrderService {
 
     private final UserService userService;
-    private final FoodService foodService;
+    private final OrderItemService orderItemService;
     private final OrderRepository orderRepository;
 
     @Autowired
     public OrderServiceImpl(final UserService userService
-            , final FoodService foodService
+            , final OrderItemService orderItemService
             , final OrderRepository orderRepository) {
         this.userService = userService;
-        this.foodService = foodService;
+        this.orderItemService = orderItemService;
         this.orderRepository = orderRepository;
     }
 
     @Override
     public Order add(OrderDTO orderDTO) {
         User user = userService.getByUsername(orderDTO.getUsername());
-        Map<Food, Long> foods ;
-        return null;
+        Order order = getOrderAmount(orderDTO.getFoodQuantity());
+        order.setUser(user);
+        order.setDate(LocalDate.now());
+        return orderRepository.save(order);
+    }
+
+    private Order getOrderAmount(Map<String, Long > orderQuantity) {
+        Order order = new Order();
+        List<OrderItem> orderItems = orderItemService.addAll(orderQuantity);
+        order.setOrderItems(orderItems);
+        double totalBill = orderItems.stream().mapToDouble(orderItem -> orderItem.getQuantity() * orderItem.getFood().getPrice()).sum();
+        order.setAmount(totalBill);
+        return order;
     }
 
     @Override
     public List<Order> getByUsernameAndDate(String username, String startDate, String endDate) {
-        return null;
+        User user = userService.getByUsername(username);
+        return orderRepository.findByUserAndDateBetween(user
+                , LocalDate.parse(startDate)
+                , LocalDate.parse(endDate));
     }
 }
