@@ -6,19 +6,12 @@ import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.List;
-
-@Getter
 @Setter
+@Getter
 @NoArgsConstructor
-@Document(collection = "users")
-public class User {
-
+@Document("role")
+public class Role {
     @Id
-    private String id;
+    private String  id;
     private String name;
-    private String address;
-    private String username;
-    private String password;
-    private List<Role> roles;
 }
