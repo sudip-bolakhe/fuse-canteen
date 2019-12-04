@@ -5,6 +5,7 @@ import com.sudip.fusecanteen.model.Order;
 import com.sudip.fusecanteen.model.OrderItem;
 import com.sudip.fusecanteen.model.User;
 import com.sudip.fusecanteen.repository.OrderRepository;
+import com.sudip.fusecanteen.utils.FoodOrderType;
 import com.sudip.fusecanteen.utils.OrderStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,8 +37,9 @@ public class OrderServiceImpl implements OrderService {
         User user = userService.getByUsername(orderDTO.getUsername());
         Order order = getOrderAmount(orderDTO.getFoodQuantity());
         order.setUser(user);
-        order.setStatus(OrderStatus.INPROGRESS.toString());
+        order.setStatus(OrderStatus.PENDING.toString());
         order.setDate(LocalDate.now());
+        order.setType(checkEnum(orderDTO.getType()).toUpperCase());
         return orderRepository.save(order);
     }
 
@@ -64,5 +66,17 @@ public class OrderServiceImpl implements OrderService {
         order.setStatus(orderStatus.toString());
         orderRepository.save(order);
         return order;
+    }
+
+    private String checkEnum(String orderType){
+        if(FoodOrderType.contains(orderType)){
+            return orderType;
+        }
+        throw new RuntimeException("Invalid Enum");
+    }
+
+    @Override
+    public List<Order> getByDateAndType(String date, String type) {
+       return orderRepository.findByDateAndType(LocalDate.parse(date),type);
     }
 }

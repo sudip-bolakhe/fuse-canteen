@@ -10,4 +10,5 @@ public interface OrderService {
     Order add(OrderDTO orderDTO);
     List<Order> getByUsernameAndDate(String username, String startDate, String endDate);
     Order updateStatus(String id, OrderStatus orderStatus);
+    List<Order> getByDateAndType(String date, String type);
 }
