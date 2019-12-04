@@ -3,6 +3,7 @@ package com.sudip.fusecanteen.resources;
 import com.sudip.fusecanteen.dto.OrderDTO;
 import com.sudip.fusecanteen.model.Order;
 import com.sudip.fusecanteen.service.OrderService;
+import com.sudip.fusecanteen.utils.OrderStatus;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -24,7 +25,7 @@ public class OrderController {
     @PreAuthorize("hasRole('User')")
     public ResponseEntity<Order>  add(@RequestBody OrderDTO orderDTO){
         Order addedOrder = orderService.add(orderDTO);
-        return new ResponseEntity(addedOrder, HttpStatus.OK);
+        return new ResponseEntity<>(addedOrder, HttpStatus.OK);
     }
 
     @GetMapping("/{username}")
@@ -33,5 +34,12 @@ public class OrderController {
             , @RequestParam String startDate, @RequestParam String endDate){
         List<Order> orders = orderService.getByUsernameAndDate(username, startDate, endDate);
         return new ResponseEntity<>(orders,HttpStatus.OK);
+    }
+
+    @PutMapping("/{id}")
+    @PreAuthorize("hasRole('Admin')")
+    public ResponseEntity<Order> updateStatus(@PathVariable String id, @RequestParam OrderStatus orderStatus){
+        Order order = orderService.updateStatus(id, orderStatus);
+        return new ResponseEntity<>(order, HttpStatus.OK);
     }
 }

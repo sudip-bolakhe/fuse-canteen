@@ -13,8 +13,8 @@ import java.util.Map;
 @ToString
 public class OrderDTO {
 
-    Map<String , Long> foodQuantity;
-    String username;
-
+   private Map<String , Long> foodQuantity;
+   private String username;
+   private String status;
 
 }
