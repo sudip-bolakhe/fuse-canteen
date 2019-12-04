@@ -3,6 +3,7 @@ package com.sudip.fusecanteen.resources;
 import com.sudip.fusecanteen.dto.OrderDTO;
 import com.sudip.fusecanteen.model.Order;
 import com.sudip.fusecanteen.service.OrderService;
+import com.sudip.fusecanteen.utils.FoodOrderType;
 import com.sudip.fusecanteen.utils.OrderStatus;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,5 +42,13 @@ public class OrderController {
     public ResponseEntity<Order> updateStatus(@PathVariable String id, @RequestParam OrderStatus orderStatus){
         Order order = orderService.updateStatus(id, orderStatus);
         return new ResponseEntity<>(order, HttpStatus.OK);
+    }
+
+    @GetMapping("/type/{type}")
+    @PreAuthorize("hasRole('Admin')")
+    public ResponseEntity<List<Order>> getByDateAndType(@RequestParam String date
+            , @PathVariable FoodOrderType type){
+        List<Order> orders = orderService.getByDateAndType(date, type.toString());
+        return new ResponseEntity<>(orders, HttpStatus.OK);
     }
 }

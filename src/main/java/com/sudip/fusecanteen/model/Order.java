@@ -25,4 +25,5 @@ public class Order {
     private double amount;
     private LocalDate date;
     private String status;
+    private String type;
 }

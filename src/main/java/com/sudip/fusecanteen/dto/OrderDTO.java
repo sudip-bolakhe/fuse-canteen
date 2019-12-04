@@ -16,5 +16,5 @@ public class OrderDTO {
    private Map<String , Long> foodQuantity;
    private String username;
    private String status;
-
+   private String type;
 }
