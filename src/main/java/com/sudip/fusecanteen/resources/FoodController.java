@@ -9,6 +9,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,12 +27,14 @@ public class FoodController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('Admin')")
     public ResponseEntity<Food> add(@RequestBody FoodDTO foodDTO){
         Food food = foodService.add(foodDTO);
         return new ResponseEntity<>(food, HttpStatus.OK);
     }
 
     @PutMapping
+    @PreAuthorize("hasRole('Admin')")
     public ResponseEntity<Food> update(@RequestBody FoodDTO foodDTO){
         Food food = foodService.update(foodDTO);
         return new ResponseEntity<>(food, HttpStatus.OK);

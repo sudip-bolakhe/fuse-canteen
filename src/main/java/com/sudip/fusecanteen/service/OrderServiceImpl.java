@@ -33,6 +33,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Order add(OrderDTO orderDTO) {
         User user = userService.getByUsername(orderDTO.getUsername());
+<<<<<<< HEAD
         Order order = getOrderAmount(orderDTO.getFoodQuantity());
         order.setUser(user);
         order.setDate(LocalDate.now());
@@ -46,6 +47,10 @@ public class OrderServiceImpl implements OrderService {
         double totalBill = orderItems.stream().mapToDouble(orderItem -> orderItem.getQuantity() * orderItem.getFood().getPrice()).sum();
         order.setAmount(totalBill);
         return order;
+=======
+        Map<Food, Long> foods ;
+        return null;
+>>>>>>> develop
     }
 
     @Override
