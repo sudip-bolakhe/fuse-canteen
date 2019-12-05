@@ -24,7 +24,7 @@ public class MenuController {
     }
 
     @GetMapping
-    @PreAuthorize("hasRole('User')")
+    @PreAuthorize("hasRole('Employee')")
     public ResponseEntity<Menu> getByDate(@RequestParam String date){
         Menu menu = menuService.getByDate(date);
         return new ResponseEntity<>(menu, HttpStatus.OK);

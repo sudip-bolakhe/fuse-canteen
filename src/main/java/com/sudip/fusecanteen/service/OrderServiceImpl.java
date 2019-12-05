@@ -55,9 +55,11 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<Order> getByUsernameAndDate(String username, String startDate, String endDate) {
         User user = userService.getByUsername(username);
-        return orderRepository.findByUserAndDateBetween(user
+        user.setRoles(null);
+        List<Order> orders = orderRepository.findByUserAndDateBetween(user.getId()
                 , LocalDate.parse(startDate)
                 , LocalDate.parse(endDate));
+        return orders;
     }
 
     @Override
