@@ -26,21 +26,18 @@ public class UserController {
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('Admin')")
     public ResponseEntity<User> add(@RequestBody UserDTO userDTO) {
         User addedUser = userService.add(userDTO);
         return new ResponseEntity<>(addedUser, HttpStatus.OK);
     }
 
     @PutMapping
-    @PreAuthorize("hasRole('Admin')")
     public ResponseEntity<User> update(@RequestBody User user) {
         User updatedUser = userService.update(user);
         return new ResponseEntity<>(updatedUser, HttpStatus.OK);
     }
 
     @GetMapping
-    @PreAuthorize("hasRole('Admin')")
     public ResponseEntity<List<User>> getAll(@PageableDefault(page = 0
             , size = 10
             , direction = Sort.Direction.DESC)

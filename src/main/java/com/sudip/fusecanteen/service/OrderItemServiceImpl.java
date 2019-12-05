@@ -44,4 +44,14 @@ public class OrderItemServiceImpl implements OrderItemService {
         }
         return orderItems;
     }
+
+    @Override
+    public void deleteByIds(List<String> ids) {
+        orderItemRepository.deleteAll(orderItemRepository.findAllById(ids));
+    }
+
+    @Override
+    public List<OrderItem> update(List<OrderItem> orderItems) {
+        return orderItemRepository.saveAll(orderItems);
+    }
 }

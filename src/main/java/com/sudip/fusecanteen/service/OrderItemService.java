@@ -7,4 +7,6 @@ import java.util.Map;
 
 public interface OrderItemService {
     List<OrderItem> addAll(Map<String, Long> foodQuantity);
+    void deleteByIds(List<String> ids);
+    List<OrderItem> update(List<OrderItem> orderItems);
 }

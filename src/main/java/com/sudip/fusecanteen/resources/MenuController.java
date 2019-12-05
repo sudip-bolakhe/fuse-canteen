@@ -24,14 +24,12 @@ public class MenuController {
     }
 
     @GetMapping
-    @PreAuthorize("hasRole('Employee')")
     public ResponseEntity<Menu> getByDate(@RequestParam String date){
         Menu menu = menuService.getByDate(date);
         return new ResponseEntity<>(menu, HttpStatus.OK);
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('Admin')")
     public ResponseEntity<Menu> add(@RequestBody MenuDTO menuDTO){
         Menu addedMenu = menuService.add(menuDTO);
         return new ResponseEntity<>(addedMenu, HttpStatus.OK);

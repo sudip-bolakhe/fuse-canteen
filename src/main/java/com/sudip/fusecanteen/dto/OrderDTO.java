@@ -12,7 +12,7 @@ import java.util.Map;
 @NoArgsConstructor
 @ToString
 public class OrderDTO {
-
+   private String id;
    private Map<String , Long> foodQuantity;
    private String username;
    private String status;

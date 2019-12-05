@@ -23,14 +23,18 @@ public class OrderController {
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('Employee')")
     public ResponseEntity<Order>  add(@RequestBody OrderDTO orderDTO){
         Order addedOrder = orderService.add(orderDTO);
         return new ResponseEntity<>(addedOrder, HttpStatus.OK);
     }
 
+    @PutMapping
+    public ResponseEntity<Order>  update(@RequestBody OrderDTO orderDTO){
+        Order addedOrder = orderService.update(orderDTO);
+        return new ResponseEntity<>(addedOrder, HttpStatus.OK);
+    }
+
     @GetMapping("/{username}")
-    @PreAuthorize("hasRole('Employee')")
     public ResponseEntity<List<Order>>  getAll(@PathVariable String username
             , @RequestParam String startDate, @RequestParam String endDate){
         List<Order> orders = orderService.getByUsernameAndDate(username, startDate, endDate);
@@ -38,14 +42,12 @@ public class OrderController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('Admin')")
     public ResponseEntity<Order> updateStatus(@PathVariable String id, @RequestParam OrderStatus orderStatus){
         Order order = orderService.updateStatus(id, orderStatus);
         return new ResponseEntity<>(order, HttpStatus.OK);
     }
 
     @GetMapping("/type/{type}")
-    @PreAuthorize("hasRole('Admin')")
     public ResponseEntity<List<Order>> getByDateAndType(@RequestParam String date
             , @PathVariable FoodOrderType type){
         List<Order> orders = orderService.getByDateAndType(date, type.toString());

@@ -27,14 +27,12 @@ public class FoodController {
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('Admin')")
     public ResponseEntity<Food> add(@RequestBody FoodDTO foodDTO){
         Food food = foodService.add(foodDTO);
         return new ResponseEntity<>(food, HttpStatus.OK);
     }
 
     @PutMapping
-    @PreAuthorize("hasRole('Admin')")
     public ResponseEntity<Food> update(@RequestBody FoodDTO foodDTO){
         Food food = foodService.update(foodDTO);
         return new ResponseEntity<>(food, HttpStatus.OK);
