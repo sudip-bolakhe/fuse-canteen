@@ -23,14 +23,14 @@ public class OrderController {
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('User')")
+    @PreAuthorize("hasRole('Employee')")
     public ResponseEntity<Order>  add(@RequestBody OrderDTO orderDTO){
         Order addedOrder = orderService.add(orderDTO);
         return new ResponseEntity<>(addedOrder, HttpStatus.OK);
     }
 
     @GetMapping("/{username}")
-    @PreAuthorize("hasRole('User')")
+    @PreAuthorize("hasRole('Employee')")
     public ResponseEntity<List<Order>>  getAll(@PathVariable String username
             , @RequestParam String startDate, @RequestParam String endDate){
         List<Order> orders = orderService.getByUsernameAndDate(username, startDate, endDate);
