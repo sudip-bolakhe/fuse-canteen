@@ -14,7 +14,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -81,17 +80,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public ResponseEntity<?> login(UserDTO userDTO) {
         RestTemplate restTemplate = new RestTemplate();
-        try {
-            UriComponents uriComponents = UriComponentsBuilder.fromUriString(authUrl).path("/oauth/token")
-                    .queryParam("username", userDTO.getUsername())
-                    .queryParam("password", userDTO.getPassword())
-                    .queryParam("grant_type", "password").build();
-            return restTemplate.exchange(uriComponents.toUri(), HttpMethod.POST, new HttpEntity<>(null, getHeaders()), String.class);
-        } catch (HttpClientErrorException e) {
-            System.out.println(e);
-            return null;
-        }
-
+        UriComponents uriComponents = UriComponentsBuilder.fromUriString(authUrl).path("/oauth/token")
+                .queryParam("username", userDTO.getUsername())
+                .queryParam("password", userDTO.getPassword())
+                .queryParam("grant_type", "password").build();
+        return restTemplate.exchange(uriComponents.toUri(), HttpMethod.POST, new HttpEntity<>(null, getHeaders()), String.class);
     }
 
     private HttpHeaders getHeaders() {
